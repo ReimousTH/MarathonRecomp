@@ -3186,7 +3186,7 @@ static void FlushViewport()
 
 static void StretchRect(GuestDevice* device, uint32_t flags, uint32_t, GuestTexture* texture)
 {
-    // printf("StretchRect %x\n", texture);
+    //printf("StretchRect %x flags : %d\n", texture, flags);
     RenderCommand cmd;
     cmd.type = RenderCommandType::StretchRect;
     cmd.stretchRect.flags = flags;
@@ -3201,7 +3201,7 @@ static void ProcStretchRect(const RenderCommand& cmd)
 {
     const auto& args = cmd.stretchRect;
 
-    const bool isDepthStencil = (args.flags & 0x4) != 0;
+    const bool isDepthStencil = false;
     const auto surface = isDepthStencil ? g_depthStencil : g_renderTarget;
 
     // Erase previous pending command so it doesn't cause the texture to be overriden.
@@ -3508,6 +3508,7 @@ static void ProcExecutePendingStretchRectCommands(const RenderCommand& cmd)
 
     for (const auto surface : g_pendingSurfaceCopies)
     {
+        
         // Depth stencil textures in this game are guaranteed to be transient.
         if (surface->format != RenderFormat::D32_FLOAT)
             foundAny |= PopulateBarriersForStretchRect(surface, nullptr);

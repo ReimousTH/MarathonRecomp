@@ -10,6 +10,10 @@
 #include <res/images/common/main_menu1.dds.h>
 #include <res/images/common/arrow.dds.h>
 
+#include <stdint.h>
+#define uint unsigned int
+
+
 std::unique_ptr<GuestTexture> g_texGeneralWindow;
 std::unique_ptr<GuestTexture> g_texLight;
 std::unique_ptr<GuestTexture> g_texSelect;
