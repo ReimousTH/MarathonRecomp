@@ -9,6 +9,10 @@
 #include <os/logger.h>
 #include <patches/audio_patches.h>
 #include <patches/inspire_patches.h>
+
+#include <patches_06/animation_module.h>
+#include <mod/mod_system_simple.h>
+
 #include <ui/game_window.h>
 #include <user/config.h>
 #include <user/paths.h>

@@ -28,6 +28,8 @@
 #include <ui/installer_wizard.h>
 #include <mod/mod_loader.h>
 #include <iostream>
+#include <patches_06/animation_module.h>
+#include <mod/mod_system_simple.h>
 
 #ifdef _WIN32
 #include <timeapi.h>

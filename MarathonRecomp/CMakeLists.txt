@@ -154,6 +154,7 @@ set(MARATHON_RECOMP_PATCHES_CXX_SOURCES
     "patches/player_patches.cpp"
     "patches/resident_patches.cpp"
     "patches/video_patches.cpp"
+    "patches_06/animation_module.cpp"
 )
 
 set(MARATHON_RECOMP_UI_CXX_SOURCES
@@ -196,6 +197,7 @@ set(MARATHON_RECOMP_USER_CXX_SOURCES
 
 set(MARATHON_RECOMP_MOD_CXX_SOURCES
     "mod/mod_loader.cpp"
+    "mod/mod_system_simple.cpp"
 )
 
 set(MARATHON_RECOMP_UTILS_CXX_SOURCES

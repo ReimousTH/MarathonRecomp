@@ -403,3 +403,5 @@ FodyWeavers.xsd
 
 UnleashedRecompLib/build
 UnleashedRecompLib/ppc*
+tools/Marathon/assimp.dll
+tools/Marathon/Marathon.CLI.exe
