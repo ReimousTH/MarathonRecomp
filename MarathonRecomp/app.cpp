@@ -300,6 +300,39 @@ void DisableMSAA(PPCRegister& val)
     val.u32 = 0;
 }
 
+void DisableStartWait()
+{
+    // printf("DisableStartWait\n");
+}
+
+PPC_FUNC_IMPL(__imp__sub_82511540);
+PPC_FUNC(sub_82511540)
+{
+    // printf("DisableStartWait2\n");
+    ctx.r11.u32 = 1;
+}
+
+void EnableTitleButtons(PPCRegister& val)
+{
+    val.u32 = 3;
+}
+
+void EnableTitleButtons2(PPCRegister& val)
+{
+    val.u32 = 5;
+}
+
+void TitleMenuDefaultSelection(PPCRegister& r4, PPCRegister& r31)
+{
+    auto saveFilePath = GetSaveFilePath(false);
+
+    if (std::filesystem::exists(saveFilePath)) {
+        r4.s64 = 5;
+
+        auto pSelectedIndex = (be<uint32_t>*)g_memory.Translate(r31.u32 + 0x7C);
+        *pSelectedIndex = 1;
+    }
+}
 
 void DebugZlibMidAsmHook(PPCRegister& id)
 {

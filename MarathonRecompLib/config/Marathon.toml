@@ -103,6 +103,29 @@ address = 0x82607BB8
 registers = ["r28"]
 after_instruction = true
 
+[[midasm_hook]]
+name = "DisableStartWait"
+address = 0x82512748
+jump_address = 0x8251274C
+
+[[midasm_hook]]
+name = "EnableTitleButtons"
+address = 0x82512810
+registers = ["r4"]
+after_instruction = true
+
+[[midasm_hook]]
+name = "EnableTitleButtons2"
+address = 0x82512874
+registers = ["r11"]
+after_instruction = true
+
+[[midasm_hook]]
+name = "TitleMenuDefaultSelection"
+address = 0x82512B04
+registers = ["r4", "r31"]
+after_instruction = true
+
 #[[midasm_hook]]
 #name = "DebugZlibMidAsmHook"
 #address = 0x826DC30C
