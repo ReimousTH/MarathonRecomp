@@ -203,6 +203,7 @@ set(MARATHON_RECOMP_MOD_CXX_SOURCES
 set(MARATHON_RECOMP_UTILS_CXX_SOURCES
     "utils/bit_stream.cpp"
     "utils/ring_buffer.cpp"
+    "utils/ex_memory.cpp"
 )
 
 set(MARATHON_RECOMP_THIRDPARTY_SOURCES

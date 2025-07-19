@@ -261,11 +261,13 @@ uint32_t XamShowMessageBoxUI(uint32_t dwUserIndex, be<uint16_t>* wszTitle, be<ui
 uint32_t XamContentCreateEnumerator(uint32_t dwUserIndex, uint32_t DeviceID, uint32_t dwContentType,
     uint32_t dwContentFlags, uint32_t cItem, be<uint32_t>* pcbBuffer, be<uint32_t>* phEnum)
 {
+   
     if (dwUserIndex != 0)
     {
         GuestThread::SetLastError(ERROR_NO_SUCH_USER);
         return 0xFFFFFFFF;
     }
+   
 
     const auto& registry = gContentRegistry[dwContentType - 1];
     const auto& values = registry | std::views::values;
@@ -301,6 +303,7 @@ uint32_t XamContentCreateEx(uint32_t dwUserIndex, const char* szRootName, const 
     const auto& registry = gContentRegistry[pContentData->dwContentType - 1];
     const auto exists = registry.contains(StringHash(pContentData->szFileName));
     const auto mode = dwContentFlags & 0xF;
+
 
     if (mode == CREATE_ALWAYS)
     {
@@ -400,7 +403,10 @@ uint32_t XamInputGetCapabilities(uint32_t unk, uint32_t userIndex, uint32_t flag
         ByteSwapInplace(caps->Vibration.wLeftMotorSpeed);
         ByteSwapInplace(caps->Vibration.wRightMotorSpeed);
     }
-
+    if (userIndex != 0)
+    {
+        return ERROR_NO_SUCH_USER;
+    }
     return result;
 }
 
@@ -486,6 +492,11 @@ uint32_t XamInputGetState(uint32_t userIndex, uint32_t flags, XAMINPUT_STATE* st
     ByteSwapInplace(state->Gamepad.sThumbLY);
     ByteSwapInplace(state->Gamepad.sThumbRX);
     ByteSwapInplace(state->Gamepad.sThumbRY);
+
+    if (userIndex != 0)
+    {
+        return ERROR_NO_SUCH_USER;
+    }
 
     return ERROR_SUCCESS;
 }

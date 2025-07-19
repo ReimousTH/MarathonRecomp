@@ -240,10 +240,13 @@ PPC_FUNC(sub_825822D0)
 
 static std::thread::id g_mainThreadId = std::this_thread::get_id();
 
+
+
 // // SWA::CApplication::Update
 PPC_FUNC_IMPL(__imp__sub_825EA610);
 PPC_FUNC(sub_825EA610)
 {
+
     __imp__sub_825EA610(ctx, base);
     // LOGN_WARNING("::Update");
     Video::WaitOnSwapChain();

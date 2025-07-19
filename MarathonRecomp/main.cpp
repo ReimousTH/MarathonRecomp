@@ -30,6 +30,7 @@
 #include <iostream>
 #include <patches_06/animation_module.h>
 #include <mod/mod_system_simple.h>
+#include <utils/ex_memory.h>
 
 #ifdef _WIN32
 #include <timeapi.h>
@@ -47,8 +48,7 @@ static std::array<std::string_view, 3> g_D3D12RequiredModules =
 const size_t XMAIOBegin = 0x7FEA0000;
 const size_t XMAIOEnd = XMAIOBegin + 0x0000FFFF;
 
-Memory g_memory;
-Heap g_userHeap;
+
 XDBFWrapper g_xdbfWrapper;
 std::unordered_map<uint16_t, GuestTexture*> g_xdbfTextureCache;
 
