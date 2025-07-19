@@ -4941,7 +4941,7 @@ static GuestVertexDeclaration* CreateVertexDeclarationWithoutAddRef(GuestVertexE
                 case D3DDECLUSAGE_TANGENT:
                 case D3DDECLUSAGE_BINORMAL:
                 case D3DDECLUSAGE_BLENDINDICES:
-                    format = RenderFormat::R32_UINT;
+                    format = RenderFormat::R32G32B32_FLOAT;
                     break;
                 }
 
@@ -4949,11 +4949,12 @@ static GuestVertexDeclaration* CreateVertexDeclarationWithoutAddRef(GuestVertexE
             };
 
         addInputElement(D3DDECLUSAGE_POSITION, 0);
+        addInputElement(D3DDECLUSAGE_POSITION, 1);
+        addInputElement(D3DDECLUSAGE_POSITION, 2);
+        addInputElement(D3DDECLUSAGE_POSITION, 3);
         addInputElement(D3DDECLUSAGE_NORMAL, 0);
         addInputElement(D3DDECLUSAGE_TANGENT, 0);
-        addInputElement(D3DDECLUSAGE_POSITION, 2);
         addInputElement(D3DDECLUSAGE_BINORMAL, 0);
-        addInputElement(D3DDECLUSAGE_POSITION, 3);
         addInputElement(D3DDECLUSAGE_TEXCOORD, 0);
         addInputElement(D3DDECLUSAGE_TEXCOORD, 1);
         addInputElement(D3DDECLUSAGE_TEXCOORD, 2);
@@ -8011,8 +8012,6 @@ GUEST_FUNCTION_STUB(sub_8254D7B0); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254D9D0); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254DB90); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254DD40); // SetScreenExtentQueryMode
-
-GUEST_FUNCTION_STUB(sub_8238D8A8); // sound, need to fix and remove this stub
 
 // HACK: need to use it via dirtyFlags, but I don't know how to do it, so call directly
 PPC_FUNC_IMPL(__imp__sub_82542DD0);

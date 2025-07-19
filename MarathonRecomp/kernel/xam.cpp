@@ -295,6 +295,23 @@ uint32_t XamEnumerate(uint32_t hEnum, uint32_t dwFlags, void* pvBuffer, uint32_t
     return ERROR_SUCCESS;
 }
 
+// Patch DLC enumeration format string to allow for whitespace
+PPC_FUNC_IMPL(__imp__sub_825B14B8);
+PPC_FUNC(sub_825B14B8) {
+    const char* _str = (const char*)g_memory.Translate(ctx.r3.u32);
+    uint32_t _1;
+    char _str_end[255];
+    sscanf(_str, "download:\\%08x\\%255[^\n\r]", &_1, _str_end);
+
+    XCONTENT_DATA _data;
+    _data.dwContentType = 2;
+    _data.DeviceID = _1;
+
+    memcpy(&_data.szFileName, &_str_end, strlen(_str_end) + 1);
+
+    XamContentCreateEx(0, "download", &_data, 3, 0, 0, 0, 0, 0);
+}
+
 uint32_t XamContentCreateEx(uint32_t dwUserIndex, const char* szRootName, const XCONTENT_DATA* pContentData,
     uint32_t dwContentFlags, be<uint32_t>* pdwDisposition, be<uint32_t>* pdwLicenseMask,
     uint32_t dwFileCacheSize, uint64_t uliContentSize, PXXOVERLAPPED pOverlapped)
@@ -390,6 +407,9 @@ uint32_t XamContentGetDeviceData(uint32_t DeviceID, XDEVICE_DATA* pDeviceData)
 
 uint32_t XamInputGetCapabilities(uint32_t unk, uint32_t userIndex, uint32_t flags, XAMINPUT_CAPABILITIES* caps)
 {
+    if (userIndex != 0)
+        return ERROR_NO_SUCH_USER;
+
     uint32_t result = hid::GetCapabilities(userIndex, caps);
 
     if (result == ERROR_SUCCESS)
@@ -412,6 +432,9 @@ uint32_t XamInputGetCapabilities(uint32_t unk, uint32_t userIndex, uint32_t flag
 
 uint32_t XamInputGetState(uint32_t userIndex, uint32_t flags, XAMINPUT_STATE* state)
 {
+    if (userIndex != 0)
+        return ERROR_NO_SUCH_USER;
+
     memset(state, 0, sizeof(*state));
 
     if (hid::IsInputAllowed())
@@ -503,6 +526,9 @@ uint32_t XamInputGetState(uint32_t userIndex, uint32_t flags, XAMINPUT_STATE* st
 
 uint32_t XamInputSetState(uint32_t userIndex, uint32_t flags, XAMINPUT_VIBRATION* vibration)
 {
+    if (userIndex != 0)
+        return ERROR_NO_SUCH_USER;
+
     if (!hid::IsInputDeviceController() || !Config::Vibration)
         return ERROR_SUCCESS;
 

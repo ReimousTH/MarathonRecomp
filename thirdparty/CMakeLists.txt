@@ -30,7 +30,7 @@ if (NOT WIN32)
 
     add_custom_command(
             OUTPUT ${FFMPEG_PATH}/config.h
-            COMMAND ./configure --disable-everything --disable-programs --disable-all --disable-x86asm --disable-autodetect --disable-network --enable-avcodec --enable-avformat --enable-avutil  --enable-swresample --enable-decoder='xmaframes'
+            COMMAND ./configure --disable-all --disable-autodetect --disable-network --enable-avcodec --enable-decoder='xmaframes'
             COMMENT "Configuring FFmpeg..."
             WORKING_DIRECTORY ${FFMPEG_PATH}
     )
@@ -63,11 +63,5 @@ if (NOT WIN32)
     endfunction()
 
     import_ffmpeg_library(avcodec)
-    import_ffmpeg_library(avformat)
-    import_ffmpeg_library(avfilter)
-    import_ffmpeg_library(avdevice)
     import_ffmpeg_library(avutil)
-    import_ffmpeg_library(swscale)
-    import_ffmpeg_library(swresample)
-    import_ffmpeg_library(postproc)
 endif()
