@@ -4284,21 +4284,22 @@ static void FlushRenderStateForMainThread(GuestDevice* device, LocalRenderComman
 
         device->dirtyFlags[3] = device->dirtyFlags[3].get() & ~BOOL_MASK;
     }
-    // for (uint32_t i = 0; i < 16; i++)
-    // {
-    //     const size_t mask = 0x8000000000000000ull >> (i + 32);
-    //     if (device->dirtyFlags[2].get() & mask)
-    //     {
-    //         auto& cmd = queue.enqueue();
-    //         cmd.type = RenderCommandType::SetSamplerState;
-    //         cmd.setSamplerState.index = i;
-    //         cmd.setSamplerState.data0 = device->samplerStates[i].data[0];
-    //         cmd.setSamplerState.data3 = device->samplerStates[i].data[3];
-    //         cmd.setSamplerState.data5 = device->samplerStates[i].data[5];
 
-    //         device->dirtyFlags[2] = device->dirtyFlags[2].get() & ~mask;
-    //     }
-    // }
+    for (uint32_t i = 0; i < 16; i++)
+    {
+        const size_t mask = 0x1ull << (i + 32);
+        if (device->dirtyFlags[2].get() & mask)
+        {
+            auto& cmd = queue.enqueue();
+            cmd.type = RenderCommandType::SetSamplerState;
+            cmd.setSamplerState.index = i;
+            cmd.setSamplerState.data0 = device->samplerStates[i].data[0];
+            cmd.setSamplerState.data3 = device->samplerStates[i].data[3];
+            cmd.setSamplerState.data5 = device->samplerStates[i].data[5];
+
+            device->dirtyFlags[2] = device->dirtyFlags[2].get() & ~mask;
+        }
+    }
 
     uint64_t dirtyFlags = device->dirtyFlags[0].get();
     if (dirtyFlags != 0)
@@ -4321,8 +4322,8 @@ static void FlushRenderStateForMainThread(GuestDevice* device, LocalRenderComman
     dirtyFlags = device->dirtyFlags[1].get();
     if (dirtyFlags != 0)
     {
-        int startRegister = std::countl_zero(dirtyFlags);
-        int endRegister = std::min(56, 64 - std::countr_zero(dirtyFlags));
+        int startRegister = std::min(56, std::countr_zero(dirtyFlags));
+        int endRegister = std::min(56, 64 - std::countl_zero(dirtyFlags));
 
         uint32_t index = startRegister * 16;
         uint32_t size = (endRegister - startRegister) * 64;
@@ -4841,6 +4842,8 @@ static GuestVertexDeclaration* CreateVertexDeclarationWithoutAddRef(GuestVertexE
             { D3DDECLUSAGE_TANGENT, 0, 2 },
             { D3DDECLUSAGE_POSITION, 2, 14 },
             { D3DDECLUSAGE_BINORMAL, 0, 3 },
+            { D3DDECLUSAGE_BINORMAL, 1, 10 },
+            { D3DDECLUSAGE_BINORMAL, 2, 11 },
             { D3DDECLUSAGE_POSITION, 3, 16 },
             { D3DDECLUSAGE_TEXCOORD, 0, 4 },
             { D3DDECLUSAGE_TEXCOORD, 1, 5 },
@@ -8090,6 +8093,7 @@ GUEST_FUNCTION_STUB(sub_8254D7B0); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254D9D0); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254DB90); // BeginConditional
 GUEST_FUNCTION_STUB(sub_8254DD40); // SetScreenExtentQueryMode
+<<<<<<< HEAD
 
 // HACK: need to use it via dirtyFlags, but I don't know how to do it, so call directly
 PPC_FUNC_IMPL(__imp__sub_82542DD0);
@@ -8155,3 +8159,5 @@ PPC_FUNC(sub_82543208)
     cmd.setSamplerState.data5 = device->samplerStates[r4.u32].data[5];
     queue.submit();
 }
+=======
+>>>>>>> e0cc8be2f65ce694ef7441435be17fbb6b0a7805
