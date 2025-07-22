@@ -8,6 +8,9 @@
 #include <kernel/heap.h>
 #include <kernel/xam.h>
 
+
+
+
 PPC_FUNC_IMPL(__imp__sub_825E9228);
 PPC_FUNC(sub_825E9228) {
 
@@ -340,7 +343,7 @@ PPC_FUNC(sub_825B3AB8) {
     // fmuls f2, f0, f29   (single-precision multiply: f2 = f0 * f29)
     ctx.f2.f64 = (double)((float)ctx.f0.f64 * (float)ctx.f29.f64);
 
-    // fmuls f1, f0, f30   (single-precision multiply: f1 = f0 * f30)
+    // fmu   f1, f0, f30   (single-precision multiply: f1 = f0 * f30)
     ctx.f1.f64 = (double)((float)ctx.f0.f64 * (float)ctx.f30.f64);
 
     if (ctx.f1.f64 >= 0.48 && ctx.f1.f64 <= 0.5) {
@@ -456,26 +459,6 @@ loc_825B3BCC:
     // lfd f31,-16(r1)
     ctx.f31.u64 = PPC_LOAD_U64(ctx.r1.u32 + -16);
     // blr 
-    return;
-}
-
-
-PPC_FUNC_IMPL(__imp__sub_825B14B8);
-PPC_FUNC(sub_825B14B8) {
-    const char* _str = (const char*)g_memory.Translate(ctx.r3.u32);
-    uint32_t _1;
-    char _str_end[255];
-    sscanf(_str, "download:\\%08x\\%255[^\n\r]", &_1, _str_end);
-    uint32_t user_index = 0;
-
- 
-
-
-    XCONTENT_DATA _data;
-    _data.dwContentType = 2;
-    _data.DeviceID = _1;
-    memcpy(&_data.szFileName, &_str_end, strlen(_str_end) + 1);
-    XamContentCreateEx(user_index, "download", &_data, 3, 0, 0, 0, 0, 0);
     return;
 }
 

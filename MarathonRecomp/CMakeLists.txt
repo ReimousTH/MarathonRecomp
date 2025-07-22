@@ -418,6 +418,7 @@ if (WIN32)
         Shcore
         Synchronization
         winmm
+        windowsapp
     )
 endif()
 
