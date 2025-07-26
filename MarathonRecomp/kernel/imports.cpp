@@ -722,9 +722,9 @@ uint32_t KeSetAffinityThread(uint32_t Thread, uint32_t Affinity, be<uint32_t>* l
 void RtlLeaveCriticalSection(XRTL_CRITICAL_SECTION* cs)
 {
     // printf("RtlLeaveCriticalSection");
-    cs->RecursionCount--;
+    cs->RecursionCount = cs->RecursionCount.get() - 1;
 
-    if (cs->RecursionCount != 0)
+    if (cs->RecursionCount.get() != 0)
         return;
 
     std::atomic_ref owningThread(cs->OwningThread);
@@ -746,7 +746,7 @@ void RtlEnterCriticalSection(XRTL_CRITICAL_SECTION* cs)
 
         if (owningThread.compare_exchange_weak(previousOwner, thisThread) || previousOwner == thisThread)
         {
-            cs->RecursionCount++;
+            cs->RecursionCount = cs->RecursionCount.get() + 1;
             return;
         }
 
@@ -790,7 +790,7 @@ void RtlCompareMemoryUlong()
 
 uint32_t RtlInitializeCriticalSection(XRTL_CRITICAL_SECTION* cs)
 {
-    printf("RtlInitializeCriticalSection %x\n", cs);
+    // printf("RtlInitializeCriticalSection %x\n", cs);
     cs->Header.Absolute = 0;
     cs->LockCount = -1;
     cs->RecursionCount = 0;
@@ -1253,7 +1253,7 @@ void XexGetModuleHandle()
 
 bool RtlTryEnterCriticalSection(XRTL_CRITICAL_SECTION* cs)
 {
-    printf("RtlTryEnterCriticalSection\n");
+    // printf("RtlTryEnterCriticalSection\n");
     uint32_t thisThread = g_ppcContext->r13.u32;
     assert(thisThread != NULL);
 
@@ -1263,7 +1263,7 @@ bool RtlTryEnterCriticalSection(XRTL_CRITICAL_SECTION* cs)
 
     if (owningThread.compare_exchange_weak(previousOwner, thisThread) || previousOwner == thisThread)
     {
-        cs->RecursionCount++;
+        cs->RecursionCount = cs->RecursionCount.get() + 1;
         return true;
     }
 
@@ -1272,7 +1272,7 @@ bool RtlTryEnterCriticalSection(XRTL_CRITICAL_SECTION* cs)
 
 void RtlInitializeCriticalSectionAndSpinCount(XRTL_CRITICAL_SECTION* cs, uint32_t spinCount)
 {
-    printf("RtlInitializeCriticalSectionAndSpinCount\n");
+    // printf("RtlInitializeCriticalSectionAndSpinCount\n");
     cs->Header.Absolute = (spinCount + 255) >> 8;
     cs->LockCount = -1;
     cs->RecursionCount = 0;
