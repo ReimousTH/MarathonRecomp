@@ -47,6 +47,7 @@
 #include "Sonicteam/Player/State/IMachine.h"
 #include "Sonicteam/Player/State/Machine2.h"
 #include "Sonicteam/Player/State/Object2.h"
+#include "Sonicteam/Player/State/SonicContext.h"
 #include "Sonicteam/Player/State/TailsContext.h"
 #include "Sonicteam/SceneLODParam.h"
 #include "Sonicteam/SceneShadowMapParam.h"
