@@ -108,7 +108,7 @@ bool MidairSnowboardControl3()
 ////////////////////////////////////////////////////////
 /////////////   Sonic Gauge Restoration ////////////////
 ////////////////////////////////////////////////////////
-//TODO Rei: Sky Gem Throw Lock Heal
+
 
 const Sonicteam::Player::State::SonicContext::GemsS gemConversionTable[] = {
     Sonicteam::Player::State::SonicContext::GemsS::SBlue,   
