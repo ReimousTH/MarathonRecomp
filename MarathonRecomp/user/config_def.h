@@ -70,6 +70,8 @@ CONFIG_DEFINE_ENUM_LOCALISED("Video", ECSMTextureFiltering, CSMTextureFiltering,
 CONFIG_DEFINE_ENUM_LOCALISED("Video", ECutsceneAspectRatio, CutsceneAspectRatio, ECutsceneAspectRatio::Original);
 CONFIG_DEFINE_ENUM_LOCALISED("Video", EUIAlignmentMode, UIAlignmentMode, EUIAlignmentMode::Edge);
 
+CONFIG_DEFINE("Render", float, PropRenderDistance, 1.0f);
+
 CONFIG_DEFINE_HIDDEN("Codes", bool, DisableDWMRoundedCorners, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, DisableTitleInputDelay, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, HUDToggleKey, false);

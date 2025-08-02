@@ -143,6 +143,18 @@ enum class EPlayerCharacter : uint32_t
     Knuckles
 };
 
+enum class EPropRenderDistance :uint32_t {
+    _1X = 1,
+    _2X,
+    _4X,
+    _8X,
+    _10X,
+    _16X,
+    _20X,
+    _30X,
+    _40X
+};
+
 template<typename T, bool isHidden = false>
 class ConfigDef final : public IConfigDef
 {

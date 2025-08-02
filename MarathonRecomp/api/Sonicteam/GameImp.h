@@ -4,6 +4,38 @@
 
 namespace Sonicteam
 {
+    struct RenderBox
+    {
+        be<float> w, h, d;
+        RenderBox operator*=(float value)
+        {
+            return
+            {
+                w = w * value,
+                h = h * value,
+                d = d * value,
+            };
+        };
+    };
+
+
+    struct GenerateArea
+    {
+        MARATHON_INSERT_PADDING(0x40);
+        RenderBox Box;
+
+    };
+    struct ActiveArea
+    {
+        MARATHON_INSERT_PADDING(0x18);
+        struct AXISBOX {
+            MARATHON_INSERT_PADDING(0x10);
+            RenderBox Box;
+        };
+        xpointer<AXISBOX> Area; //0x18
+   
+    };
+
     class GameImp : public SoX::MessageReceiver
     {
     public:
@@ -29,5 +61,10 @@ namespace Sonicteam
 
         MARATHON_INSERT_PADDING(0xE3C);
         PlayerData m_PlayerData[4];
+
+        MARATHON_INSERT_PADDING(0xA24);
+        xpointer<ActiveArea> m_ActiveArea[4];
+        xpointer<GenerateArea> m_GenerateArea[4];
+
     };
 }
