@@ -52,6 +52,7 @@ PPC_FUNC(sub_8262A568)
 
     __imp__sub_8262A568(ctx, base);
     
+
     struct DefaultInterestionRender {
         be<float> _ClipDistance;
         be<float> _TerrainClipDistance;
@@ -62,9 +63,26 @@ PPC_FUNC(sub_8262A568)
     DIR->_TerrainClipDistance = DIR->_ClipDistance * Config::TerrainClipDistance;
     DIR->_FarDistance = DIR->_ClipDistance* Config::LODFarDistance;
 
+   
+
+    auto _garea = (Sonicteam::RenderBox*)g_memory.Translate(0x82B11A10);
+    auto _aarea = (Sonicteam::RenderBox*)g_memory.Translate(0x82B11A20);
+    *_garea *= Config::PropRenderDistance;
+    *_aarea *= Config::PropRenderDistance;
+
+
     App::s_pApp = (Sonicteam::AppMarathon*)g_memory.Translate(ctx.r3.u32);
 }
 
+PPC_FUNC_IMPL(__imp__sub_82462A50);
+PPC_FUNC(sub_82462A50) {
+    __imp__sub_82462A50(ctx, base);
+    for (int i = 0; i < 4; i++) {
+        App::s_pApp->m_pDoc->GetDocMode<Sonicteam::GameMode>()->m_pGameImp->m_ActiveArea[i]->Area->Box *= Config::PropRenderDistance;
+        App::s_pApp->m_pDoc->GetDocMode<Sonicteam::GameMode>()->m_pGameImp->m_GenerateArea[i]->Box *= Config::PropRenderDistance;
+    }
+    
+}
 // Sonicteam::DocMarathonState::Update
 PPC_FUNC_IMPL(__imp__sub_825EA610);
 PPC_FUNC(sub_825EA610)

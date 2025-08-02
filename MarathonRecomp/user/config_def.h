@@ -71,10 +71,13 @@ CONFIG_DEFINE_ENUM_LOCALISED("Video", ECutsceneAspectRatio, CutsceneAspectRatio,
 CONFIG_DEFINE_ENUM_LOCALISED("Video", EUIAlignmentMode, UIAlignmentMode, EUIAlignmentMode::Edge);
 
 
+
 CONFIG_DEFINE("Render", float, LODFarDistance, 1.0);
 CONFIG_DEFINE("Render", float, LODClipDistance, 1.0);
 CONFIG_DEFINE("Render", float, TerrainClipDistance, 1.0);
 CONFIG_DEFINE("Render", float, CameraFarDistance, 1.0);
+CONFIG_DEFINE("Render", float, PropRenderDistance, 1.0f);
+
 
 CONFIG_DEFINE_HIDDEN("Codes", bool, DisableDWMRoundedCorners, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, DisableTitleInputDelay, false);
