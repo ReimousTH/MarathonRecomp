@@ -154,7 +154,6 @@ name = "PostureDisableEdgeGrabLeftover"
 address = 0x82200568
 registers = ["r31"]
 
-<<<<<<< HEAD
 [[midasm_hook]]
 name = "PedestrianAnimationLOD"
 address = 0x824C2808

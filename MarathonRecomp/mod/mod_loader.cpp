@@ -10,6 +10,23 @@
 #include <os/process.h>
 #include <xxHashMap.h>
 
+#include <Marathon.h>
+//03.08.2025 Trash Removed
+
+PPC_FUNC_IMPL(__imp__sub_828B30A8);
+PPC_FUNC(sub_828B30A8) {
+
+    auto pHandle = (Sonicteam::SoX::FileHandleARC*)(base + ctx.r3.u32);
+    if (!pHandle->m_IsLoaded) {
+
+
+
+    }
+    __imp__sub_828B30A8(ctx, base);
+}
+
+
+
 enum class ModType
 {
     HMM,
