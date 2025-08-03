@@ -51,6 +51,16 @@ PPC_FUNC(sub_8262A568)
     LOGFN_UTILITY("Changed resolution: {}x{}", cfg->Width.get(), cfg->Height.get());
 
     __imp__sub_8262A568(ctx, base);
+    
+    struct DefaultInterestionRender {
+        be<float> _ClipDistance;
+        be<float> _TerrainClipDistance;
+        be<float> _FarDistance;
+    };
+    auto DIR = (DefaultInterestionRender*)g_memory.Translate(0x82B7B82C);;
+    DIR->_ClipDistance = DIR->_ClipDistance* Config::LODClipDistance;
+    DIR->_TerrainClipDistance = DIR->_ClipDistance * Config::TerrainClipDistance;
+    DIR->_FarDistance = DIR->_ClipDistance* Config::LODFarDistance;
 
     App::s_pApp = (Sonicteam::AppMarathon*)g_memory.Translate(ctx.r3.u32);
 }
@@ -181,7 +191,7 @@ PPC_FUNC(sub_82590C38)
     float pFar = ctx.f1.f64;
     pCamera->m_Far = pFar;
     printf("pCamera[%s] pFar = %f\n", pCamera->m_CamName.c_str(), pFar); 
-    pCamera->m_Far = 12800000;
+    pCamera->m_Far = pCamera->m_Far * Config::CameraFarDistance;
     GuestToHostFunction<void>(sub_82590A28,ctx.r3.u32,pFar);
     return;
 }
@@ -196,11 +206,11 @@ PPC_FUNC(sub_825F3FE0)
     auto& lMain = pSceneLOD->m_LODParam[Sonicteam::SceneLODParam::Main];
     for (int i = 0; i < 19; i++) 
     {
-        pSceneLOD->m_LODParam[i].m_IsSet = 1;
-        pSceneLOD->m_LODParam[i].m_FarDistance = 12800000;
-        pSceneLOD->m_LODParam[i].m_ClipDistance = 12800000;
-        pSceneLOD->m_LODParam[i].m_TerrainClipDistance = 12800000;
-
+        if (pSceneLOD->m_LODParam[i].m_IsSet) {
+            pSceneLOD->m_LODParam[i].m_FarDistance = Config::TerrainClipDistance *  pSceneLOD->m_LODParam[i].m_FarDistance;
+            pSceneLOD->m_LODParam[i].m_ClipDistance = Config::TerrainClipDistance *  pSceneLOD->m_LODParam[i].m_ClipDistance;
+            pSceneLOD->m_LODParam[i].m_TerrainClipDistance = Config::TerrainClipDistance *  pSceneLOD->m_LODParam[i].m_TerrainClipDistance;
+        }
     }
     return;
 }
