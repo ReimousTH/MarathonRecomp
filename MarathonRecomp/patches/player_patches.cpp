@@ -118,6 +118,17 @@ const Sonicteam::Player::State::SonicContext::GemsS gemConversionTable[] = {
     Sonicteam::Player::State::SonicContext::GemsS::SYellow, 
     Sonicteam::Player::State::SonicContext::GemsS::SSuper   
 };
+const Sonicteam::Player::State::SonicContext::GemsS gemConversionTable2[] = {
+    Sonicteam::Player::State::SonicContext::GemsS::SNone,
+    Sonicteam::Player::State::SonicContext::GemsS::SBlue,
+    Sonicteam::Player::State::SonicContext::GemsS::SRed,
+    Sonicteam::Player::State::SonicContext::GemsS::SGreen,
+    Sonicteam::Player::State::SonicContext::GemsS::SPurple,
+    Sonicteam::Player::State::SonicContext::GemsS::SSky,
+    Sonicteam::Player::State::SonicContext::GemsS::SWhite,
+    Sonicteam::Player::State::SonicContext::GemsS::SYellow,
+    Sonicteam::Player::State::SonicContext::GemsS::SSuper
+};
 
 //Check Gauge Drain
 //SonicTeam::Player::SonicGauge (IVariable), IVariable::Init(REF_TYPE(SonicTeam::LuaSystem))
@@ -219,7 +230,8 @@ PPC_FUNC(sub_82218068) {
 
 
 PPC_FUNC_IMPL(__imp__sub_8223F360);
-PPC_FUNC(sub_8223F360) {
+PPC_FUNC(sub_8223F360)
+{
 
     auto IVariable = ctx.r3.u32;
     auto RefTypeLuaSystem = ctx.r4.u32;
@@ -280,6 +292,28 @@ PPC_FUNC(sub_8223F360) {
 }
  
 
+class SonicGaugeEX :public Sonicteam::Player::SonicGauge
+{
+public:
+    be<float> m_MLevels[9];
+    
+
+};
+
+Sonicteam::GameImp::PlayerData* GetPlayerData(Sonicteam::Player::Object* pPlayer)
+{
+    auto pGameImp = App::s_pApp->m_pDoc->GetDocMode<Sonicteam::GameMode>()->m_pGameImp;
+    for (int i = 0; i < 4; i++)
+    {
+        if (pGameImp->m_PlayerData[i].ActorID == pPlayer->m_ActorID.get())
+        {
+            return  &pGameImp->m_PlayerData[i];
+        }
+    }
+    return 0;
+}
+
+
 void SonicGaugeRestorationGaugeGemSpriteResetFix(PPCRegister& r_GameImp) {
 
     Sonicteam::GameImp* pGameImp = (Sonicteam::GameImp*)g_memory.Translate(r_GameImp.u32);
@@ -288,15 +322,29 @@ void SonicGaugeRestorationGaugeGemSpriteResetFix(PPCRegister& r_GameImp) {
 }
 
 
+
+
 void SonicGaugeRestorationGaugeFlagFix(PPCRegister& r_gauge, PPCRegister& r_context) {
 
     if (!Config::SonicGauge || !r_gauge.u32)
         return;
 
-    auto pGauge = (Sonicteam::Player::SonicGauge*)g_memory.Translate(r_gauge.u32);
+
+
+
+    auto pGauge = (SonicGaugeEX*)g_memory.Translate(r_gauge.u32);
     auto PContext = (Sonicteam::Player::State::SonicContext*)g_memory.Translate(r_context.u32);
     if ((uint32_t)(static_cast<Sonicteam::Player::IPlugIn*>(pGauge)->m_pVftable.get()) != 0x8200D4D8) // != SonicGauge 
         return;
+
+
+
+
+    auto pPlayerData = GetPlayerData(PContext->m_pScore->m_pPlayer);
+    auto pIndex = PContext->m_CurrentGem.get();
+    pPlayerData->MaturityLevel = pPlayerData->pad59[pIndex];
+    pPlayerData->MaturityValue = pGauge->m_MLevels[pIndex];
+
 
     auto weapons = PContext->m_pScore->m_pPlayer->GetPlugin<Sonicteam::Player::Weapon::SonicWeapons>("sonic_weapons");
     if (PContext->m_Tornado != 0 || PContext->m_CurrentAnimation == 0xCB || PContext->m_CurrentAnimation == 0xCC || PContext->m_CurrentAnimation == 0x46 || PContext->m_CurrentAnimation == 0xCE ||  weapons->m_GunDrive.Entity != 0)
@@ -328,4 +376,63 @@ void SonicGaugeRestorationGaugeFlagFix(PPCRegister& r_gauge, PPCRegister& r_cont
     }
 
 }
-//Sonic Gauge Restoration
+const float c_maturity_max = 100.0;
+const float c_maturity_level_max = 3.0;
+const float c_maturity_point = 10.0;
+
+
+
+
+void ExtraAddMaturityToPlayer(Sonicteam::Player::Object* pPlayer, float value)
+{
+    auto pPlayerData = GetPlayerData(pPlayer);
+
+
+    auto IGauge = pPlayer->GetGauge<Sonicteam::Player::IPlugIn>();
+    if (IGauge->m_pVftable.ptr.get() == 0x8200D4D8)
+    {
+        auto GaugeEX = pPlayer->GetGauge<SonicGaugeEX>();
+        auto pSonicC = pPlayer->m_spStateMachine->GetContext<Sonicteam::Player::State::SonicContext>();
+        auto pIndex = pSonicC->m_CurrentGem.get();
+        auto& pValue = GaugeEX->m_MLevels[pIndex];
+        pValue = pValue.get() + value;
+        if (pValue.get() >= 1.0)
+        {
+            pValue = 0.0;
+            pPlayerData->pad59[pIndex] = pPlayerData->pad59[pIndex] + 1;
+        }
+    }
+    else
+    {
+        pPlayerData->MaturityValue = pPlayerData->MaturityValue + value;
+
+        if (pPlayerData->MaturityValue >= 1.0)
+        {
+            pPlayerData->MaturityValue = 0.0;
+            pPlayerData->MaturityLevel = pPlayerData->MaturityValue + 1;
+
+        }
+    }
+}
+
+
+
+
+void SonicGaugeMaturityExMoreMem(PPCRegister& r3)
+{
+    r3.u32 = sizeof(SonicGaugeEX);
+}
+
+void SonicGaugeMaturityExMoreMemZERO(PPCRegister& r3)
+{
+    ZeroMemory( (void*)(g_memory.Translate(r3.u32)), sizeof(SonicGaugeEX));
+}
+//Sonic Gauge Restoration (EXTREME)
+PPC_FUNC_IMPL(__imp__sub_82198C08);
+PPC_FUNC(sub_82198C08)
+{
+    auto pPlayer = (Sonicteam::Player::Object*)(base + ctx.r3.u32);
+ //   pPlayer->GetGauge<Sonicteam::Player::SonicGaugeEX>();
+    ExtraAddMaturityToPlayer(pPlayer, (1.0 / c_maturity_max) * c_maturity_point); 
+    __imp__sub_82198C08(ctx, base);
+}

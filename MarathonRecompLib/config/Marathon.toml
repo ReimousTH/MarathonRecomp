@@ -213,3 +213,15 @@ name = "SonicGaugeRestorationGaugeGemSpriteResetFix"
 address = 0x82177DFC
 registers = ["r31"]
 
+
+[[midasm_hook]]
+name = "SonicGaugeMaturityExMoreMem"
+address = 0x8219F03C
+registers = ["r3"]
+after_instruction = false
+
+[[midasm_hook]]
+name = "SonicGaugeMaturityExMoreMemZERO"
+address = 0x8219F040
+registers = ["r3"]
+

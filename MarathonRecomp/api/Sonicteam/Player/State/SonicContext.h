@@ -13,6 +13,7 @@ namespace Sonicteam::Player::State
         //Sprite
         enum GemsS:uint32_t
         {
+            SNone = 0,
             SGreen = 1,
             SRed,
             SBlue,
@@ -25,6 +26,7 @@ namespace Sonicteam::Player::State
 
         enum Gems:uint32_t
         {
+            None = 0,
             Blue = 1,
             Red,
             Green,
