@@ -16,6 +16,7 @@
 #include "CSD/Manager/csdmSubjectBase.h"
 #include "CSD/Platform/csdTexList.h"
 #include "Sonicteam/Actor.h"
+#include "Sonicteam/ActorManager.h"
 #include "Sonicteam/AppMarathon.h"
 #include "Sonicteam/Camera/CameraMode.h"
 #include "Sonicteam/Camera/Cameraman.h"

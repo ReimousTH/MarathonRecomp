@@ -14,11 +14,7 @@ namespace Sonicteam::Player::State
         MARATHON_INSERT_PADDING(0x30);
         boost::shared_ptr<IContext> m_spContext;
 
-        inline SoX::AI::StateMachine<IContext>* GetBase()
-        {
-            return (SoX::AI::StateMachine<IContext>*)((uint8_t*)this - 0x20);
-        }
-
+  
         template <typename T = IContext>
         inline T* GetContext()
         {

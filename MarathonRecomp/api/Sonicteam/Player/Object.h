@@ -33,6 +33,19 @@ namespace Sonicteam::Player
             unsigned int global_flag;
             unsigned int equip_flag;
         };
+        //Start template for all message
+        class TObjectMessage:SoX::TMessage
+        {
+            be<uint32_t> m_MessageID;
+            enum Message :uint32_t
+            {
+                MESSAGE_CHAOSDRIVE_TYPE_A_GET   = 0x11033,
+                MESSAGE_POWERCORE_TYPE_A_GET   = 0x11034,
+                MESSAGE_CHAOSDRIVE_TYPE_B_GET = 0x11035,
+                MESSAGE_POWERCORE_TYPE_B_GET = 0x11036,
+            };
+        };
+        //More Message ...
 
     public:
         stdx::string m_PlayerLUA;
@@ -53,7 +66,7 @@ namespace Sonicteam::Player
         xpointer<uint32_t> m_PackageBinary; // REF_TYPE(RefCountObject)
         boost::shared_ptr<uint32_t> m_PlayerModel;
         boost::shared_ptr<uint32_t> m_PlayerPosture;
-        boost::shared_ptr<State::Machine2> m_spStateMachine;
+        boost::shared_ptr<State::IMachine> m_spStateMachine;
         boost::shared_ptr<uint32_t> m_PlayerGravity;
         boost::shared_ptr<uint32_t> m_PlayerImpulse;
         be<uint32_t> m_LastSetupModule;
@@ -71,8 +84,11 @@ namespace Sonicteam::Player
         template <typename T>
         inline T* GetGauge();
 
-		template <typename T = Sonicteam::Player::IPlugIn>
+		template <typename T = Player::IPlugIn>
 		inline T* GetPlugin(const char* v_name);
+
+        template <typename T = State::IMachine>
+        inline T* GetMachine();
 
 
     };

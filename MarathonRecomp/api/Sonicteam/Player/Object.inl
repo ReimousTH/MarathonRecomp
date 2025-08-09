@@ -19,4 +19,10 @@ namespace Sonicteam::Player
         }
         return nullptr;
     }
+
+    template<typename T>
+    inline T* Object::GetMachine()
+    {
+        return static_cast<T*>(m_spStateMachine.get());
+    }
 }

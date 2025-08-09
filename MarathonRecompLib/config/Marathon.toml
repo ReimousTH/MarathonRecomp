@@ -223,5 +223,5 @@ after_instruction = false
 [[midasm_hook]]
 name = "SonicGaugeMaturityExMoreMemZERO"
 address = 0x8219F040
-registers = ["r3"]
+registers = ["r3","r29"]
 
