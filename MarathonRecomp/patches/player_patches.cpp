@@ -281,7 +281,7 @@ void ExtraAddMaturityToPlayer(Sonicteam::Player::Object* pPlayer, float value)
         pValue = pValue + ((1.0 / pValueMax) * value);
         if (pValue >= 1.0)
         {   
-            pValue = 0.0;
+            pValue = pValue - 1.0; //fair mode
             ExtraAddMaturityLevelToPlayer(pPlayerData, pIndex);
         }
         ExtraSetMaturityMeterToPlayer(pPlayerData, pIndex, pValue.get());
