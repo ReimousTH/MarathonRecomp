@@ -4,6 +4,7 @@
 #include <kernel/function.h>
 #include <os/process.h>
 #include <os/logger.h>
+#include <patches/audio_patches.h>
 #include <ui/game_window.h>
 #include <user/config.h>
 #include <user/paths.h>
@@ -19,13 +20,6 @@ void App::Restart(std::vector<std::string> restartArgs)
 
 void App::Exit()
 {
-    // TODO (Hyper): remove this once the new options menu is implemented.
-    if (auto pAudioEngine = Sonicteam::AudioEngineXenon::GetInstance())
-    {
-        Config::MusicVolume = pAudioEngine->m_MusicVolume;
-        Config::EffectsVolume = pAudioEngine->m_EffectsVolume;
-    }
-
     Config::Save();
 
 #ifdef _WIN32
@@ -97,6 +91,8 @@ PPC_FUNC(sub_825EA610)
 
     // Allow variable FPS when config is not 60 FPS.
     App::s_pApp->m_pDoc->m_VFrame = Config::FPS != 60;
+
+    AudioPatches::Update(App::s_deltaTime);
 
     __imp__sub_825EA610(ctx, base);
 }
