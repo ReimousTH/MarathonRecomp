@@ -77,7 +77,7 @@ namespace Sonicteam::SoX
         be<uint32_t> m_RootEntry;
     };
 
-    class ArcHandle:IResource2<ArcHandle,ArcHandleMgr>
+    class ArcHandle:public IResource2<ArcHandle,ArcHandleMgr>
     {
     public:
         LinkNode<ArcHandle> m_lnHandle;

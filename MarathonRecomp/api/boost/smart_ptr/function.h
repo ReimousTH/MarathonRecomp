@@ -155,6 +155,7 @@ namespace boost
             return (*impl_)(std::forward<Args>(args)...);
         }
 
+        /*
         // For void return type specialization
         void operator()(Args... args) const
         {
@@ -164,6 +165,7 @@ namespace boost
             }
             (*impl_)(std::forward<Args>(args)...);
         }
+        */
     };
 
     // Swap function

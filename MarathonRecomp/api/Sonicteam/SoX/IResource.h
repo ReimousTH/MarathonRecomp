@@ -10,7 +10,7 @@ namespace Sonicteam::SoX
     public:
         struct Vftable:RefCountObject::Vftable
         {
-            MARATHON_INSERT_PADDING(4);
+            be<uint32_t> Initialize;
             be<uint32_t> GetPath; //returns fixed name (player/sonic_new.lua) -> game:\\<xenon|win32|common>/player/sonic_new.lua
             be<uint32_t> InArc; 
         };
