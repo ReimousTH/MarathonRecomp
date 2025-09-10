@@ -146,6 +146,7 @@ set(MARATHON_RECOMP_PATCHES_CXX_SOURCES
     "patches/text_patches.cpp"
     "patches/TitleTask_patches.cpp"
     "patches/video_patches.cpp"
+    "patches/codemodsystem.cpp"
 )
 
 set(MARATHON_RECOMP_UI_CXX_SOURCES

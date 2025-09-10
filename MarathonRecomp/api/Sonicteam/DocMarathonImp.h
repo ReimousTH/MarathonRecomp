@@ -5,6 +5,10 @@
 #include <Sonicteam/SoX/Input/Manager.h>
 #include <boost/smart_ptr/shared_ptr.h>
 #include <api/stdx/vector.h>
+#include <api/stdx/string.h>
+#include <Sonicteam/SoX/ArcHandle.h>
+#include <Sonicteam/SoX/RefCountObject.h>
+#include <Sonicteam/SoX/RefSharedPointer.h>
 
 namespace Sonicteam
 {
@@ -17,5 +21,7 @@ namespace Sonicteam
         bool m_VFrame;
         MARATHON_INSERT_PADDING(0x55B58);
         be<uint32_t> m_PlayerControllerID[4];
+        MARATHON_INSERT_PADDING(4);
+        stdx::vector<Sonicteam::SoX::RefSharedPointer<Sonicteam::SoX::ArcHandle>> m_vspArcHandle;
     };
 }
