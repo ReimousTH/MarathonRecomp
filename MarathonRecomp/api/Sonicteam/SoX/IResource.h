@@ -14,12 +14,18 @@ namespace Sonicteam::SoX
             be<uint32_t> GetPath; //returns fixed name (player/sonic_new.lua) -> game:\\<xenon|win32|common>/player/sonic_new.lua
             be<uint32_t> InArc; 
         };
-        stdx::string GetPath(stdx::string filename)
+
+        void Initialize(void* File,uint64_t Size)
         {
             Vftable* vft = (Vftable*)m_pVftable.get();
-            auto name = guest_stack_var<stdx::string>(filename);
+            GuestToHostFunction<void>(vft->Initialize,this, File,Size);
+        }
+
+        stdx::string GetPath(stdx::string& filename)
+        {
+            Vftable* vft = (Vftable*)m_pVftable.get();
             auto return_value = guest_stack_var<stdx::string>();
-            GuestToHostFunction<void>(vft->GetPath, return_value.get(), this, name.get());
+            GuestToHostFunction<void>(vft->GetPath, return_value.get(), this, &filename);
             return *return_value;
         }
         bool InArc()

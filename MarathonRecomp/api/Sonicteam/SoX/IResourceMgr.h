@@ -5,6 +5,12 @@
 
 namespace Sonicteam::SoX
 {
+
+    struct IResourceMgrCreationParam
+    {
+
+    };
+
     class IResourceMgr
     {
     public:
@@ -23,16 +29,15 @@ namespace Sonicteam::SoX
             return GuestToHostFunction<void*>(m_pVftable->Destroy, this, flag);
         }
 
-        Sonicteam::SoX::IResource* CreateResource()
+        Sonicteam::SoX::IResource* CreateResource(IResourceMgrCreationParam& param)
         {
-            return GuestToHostFunction<Sonicteam::SoX::IResource*>(m_pVftable->CreateResource, this);
+            return GuestToHostFunction<Sonicteam::SoX::IResource*>(m_pVftable->CreateResource, this,&param);
         }
 
-        stdx::string GetPath(stdx::string filename)
+        stdx::string GetPath(stdx::string& filename)
         {
-            auto name = guest_stack_var<stdx::string>(filename);
             auto return_value = guest_stack_var<stdx::string>();
-            GuestToHostFunction<void>(m_pVftable->GetPath, return_value.get(), this, name.get());
+            GuestToHostFunction<void>(m_pVftable->GetPath, return_value.get(), this, &filename);;
             return *return_value;
         }
 

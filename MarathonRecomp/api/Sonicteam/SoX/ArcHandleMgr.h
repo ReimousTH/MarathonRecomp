@@ -21,7 +21,7 @@ namespace Sonicteam::SoX
         xpointer<Sonicteam::SoX::ArcHandle> pArcHandle;
     };
 
-    class ArcHandleMgr: public Sonicteam::SoX::IResourceMgr, public Sonicteam::System::Singleton<Sonicteam::SoX::ArcHandleMgr,0x82D366D4, Sonicteam::System::CreateStatic<Sonicteam::SoX::ArcHandleMgr,0x82163D20>>
+    class ArcHandleMgr: public Sonicteam::SoX::IResourceMgr, public Sonicteam::System::Singleton<Sonicteam::SoX::ArcHandleMgr,0x82D36710, Sonicteam::System::CreateStatic<Sonicteam::SoX::ArcHandleMgr,0x82163D20>>
     {
     public:
         Sonicteam::SoX::LinkNode<Sonicteam::SoX::ArcHandle> m_laArcHandle; //LinkArray
