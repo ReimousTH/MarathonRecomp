@@ -91,7 +91,7 @@ PPC_FUNC(sub_8221A7D8)
         pGauge->m_Value = (100.0f / pTailsContext->m_FlightDuration) * pTailsContext->m_FlightTime;
     }
 
-    auto pTailsFlight = pPlayer->m_spStateMachine->GetBase()->GetState<Sonicteam::Player::State::TailsFlight>();
+    auto pTailsFlight = pPlayer->GetStateMachine()->GetState<Sonicteam::Player::State::TailsFlight>();
     auto pGame = App::s_pApp->GetGame();
 
     auto maturityValue = 1.0f;
@@ -523,3 +523,13 @@ bool InfiniteLives()
 {
     return Config::InfiniteLives;
 }
+
+
+#if MARATHON_POSTURECONTROL_USE_RECREATED_VERSION == 1
+PPC_FUNC_IMPL(__imp__sub_82200538);
+PPC_FUNC(sub_82200538)
+{
+    auto PostureControl = (Sonicteam::Player::PostureControl*)(base + ctx.r3.u32);
+    PostureControl->RecreatedUpdate(ctx.f1.f64);
+}
+#endif
